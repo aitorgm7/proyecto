@@ -1,0 +1,29 @@
+select id nombre from alumnos
+where '1daw';
+
+while($fila=$resultado->fetch_array()){
+    echo "<p>";
+    echo $fila["nombre"].'-'.$fila["id"];
+    echo "</p>";   
+}
+
+lógica negocio y vista tienen que estar separados
+
+MVC(M=consultas BBDD, V=html con pequeños trozos de php, C es la logica negocio que contiene el php)
+
+require 'configdb.php';
+  
+  function conectar(){
+    $conexion = new mysqli(SERVIDOR, USUARIO, PASSWORD, BBDD);
+    $conexion->set_charset("utf8"); 
+    return $conexion;
+  }
+
+al entrar sale el inicio de sesion
+
+$usuario=$_POST[usuario];
+$contrasena=$_POST[contrasena];
+
+
+session_start();
+session_destroy();
