@@ -27,3 +27,5 @@ $contrasena=$_POST[contrasena];
 
 session_start();
 session_destroy();
+
+

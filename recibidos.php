@@ -1,4 +1,5 @@
 <?php
+  session_start();
   require 'configdb.php';
   
   function conectar(){
@@ -8,18 +9,23 @@
   }
   
   //Función para mostrar filas de una tabla
-  function mostrar_alumnos(){ 
+  function mostrarRecibido(){ 
     //Conecta con la base de datos
     $conexion = conectar();  
     
+
     //Ejecuta la consulta sql
-    $sql = "select * from alumnos";
-    $resultado = $conexion->query($sql);	
-    
-    while($fila = $resultado->fetch_array()){
-        echo '<option value="' . $fila["puesto"] . '">' . $fila["nombre"] . '</option>';
+    $sql="SELECT * FROM agradecimientos WHERE idReceptor='".$_SESSION['id']."';";
+    $resultado=$conexion->query($sql);
+
+    while($fila=$resultado->fetch_array()){
+        $sql2="SELECT nick_jesuita FROM alumnos WHERE puesto='".$fila["idEmisor"]."';";
+        $resultado2=$conexion->query($sql2);
+        $mostrar=$resultado2->fetch_array();
+        echo '<section><p>enviador por: '.$mostrar["nick_jesuita"].'</p><form method=\'post\' action=\'\' disable><input type=\'hidden\' value=\''.$fila["idAgradecimiento"].'\'/><input type=\'submit\' value=\'Ver Mensaje\'/></form></section>';
     }
-    
+
+    $conexion->close();
   }
 ?>
 
@@ -37,22 +43,15 @@
             <hr>
         </header>
         <nav class="menu">
-            <a href="agradecer.php" id="lineaN">Agradecer</a>
-            <a href="recibidos.php">Recibir</a>
+            <a href="agradecer.php">Agradecer</a>
+            <a href="recibidos.php" id="lineaN">Recibir</a>
             <a href="cerrarsesion.php">Cerrar Sesión</a>
         </nav>
-        <article>
-            <form id="agradece" action="agradecerVolver.php" method="post">
-                <label for="puesto">para</label><br>
-                <select name="puesto" id="puesto">
-                    <?php
-                        mostrar_alumnos();
-                    ?>
-                </select><br>
-                <label for="mensaje">quiero agradecer</label><br>
-                <textarea name="mensaje" id="mensaje" placeholder="Escribe aquí tu mensaje de agradecimiento..."></textarea><br>
-                <input type="submit" value="ENVIAR">
-            </form>
+        <article class="recibir">
+            <?php
+                mostrarRecibido();  
+            ?>
+            <a href="agradecer.php">volver</a>
         </article>
         <footer><hr><p><img src=".\logo_jesuita.png" alt="logo_jesuita"></p><hr></footer>
     </body>

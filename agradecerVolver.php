@@ -1,4 +1,5 @@
 <?php
+  session_start();
   require 'configdb.php';
   
   function conectar(){
@@ -14,11 +15,11 @@
     
 
     //Ejecuta la consulta sql
-    $sql="INSERT INTO agradecimientos (mensaje,idEmisor,idReceptor) VALUES ('".$_POST["agradecer"]."',".$_SESSION["id"].",'".$_POST["puesto"]."');";
+    $sql="INSERT INTO agradecimientos (mensaje,idEmisor,idReceptor) VALUES ('".$_POST["mensaje"]."','".$_SESSION["id"]."','".$_POST["puesto"]."');";
     $conexion->query($sql);	
     
     echo '<p>enviado a '.$_POST["puesto"].'</p>';
-    echo '<p>mensaje: '.$_POST["agradecer"].'</p>';
+    echo '<p>mensaje: '.$_POST["mensaje"].'</p>';
     $conexion->close();
   }
 ?>
@@ -37,9 +38,9 @@
             <hr>
         </header>
         <nav class="menu">
-            <a href="" id="lineaN">Agradecer</a>
-            <a href="">Recibir</a>
-            <a href="inicio_sesion.html">Cerrar Sesión</a>
+            <a href="agradecer.php" id="lineaN">Agradecer</a>
+            <a href="recibidos.php">Recibir</a>
+            <a href="cerrarsesion.php">Cerrar Sesión</a>
         </nav>
         <article class="resultado">
             <?php
